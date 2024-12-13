@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Windows Tech Edition</title>
+    <link rel="icon" href="pfp.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: url('back.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #000000;
+        }
+
+        .desktop {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .start-button {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to bottom, #ff00ff 0%, #00ffff 100%);
+            border: 1px solid #215121;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px;
+            cursor: pointer;
+            z-index: 1000;
+            text-shadow: 2px 2px #000000;
+        }
+
+        .taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, #ff00ff 0%, #00ffff 100%);
+            border-top: 1px solid #5992ff;
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .icon img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .icon-label {
+            color: white;
+            text-shadow: 2px 2px #000000;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .window {
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            background-color: rgba(236, 233, 216, 0.9);
+            border: 3px solid #ff00ff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .window-header {
+            background: linear-gradient(to right, #ff00ff 0%, #00ffff 100%);
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+            cursor: move;
+            text-shadow: 2px 2px #000000;
+        }
+
+        .window-content {
+            padding: 10px;
+        }
+
+        .close-button {
+            float: right;
+            background: #ff3c3c;
+            border: 1px solid #cc0000;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @keyframes startup {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .desktop {
+            animation: startup 2s;
+        }
+
+        .start-menu {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 320px;
+            background-color: rgba(217, 228, 236, 0.9);
+            border: 3px solid #ff00ff;
+            border-bottom: none;
+            box-shadow: 0 0 10px #00ffff;
+            display: none;
+            z-index: 1000;
+        }
+
+        .start-menu-header {
+            background: linear-gradient(to bottom, #ff00ff 0%, #00ffff 100%);
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            text-shadow: 2px 2px #000000;
+        }
+
+        .start-menu-user {
+            display: flex;
+            align-items: center;
+        }
+
+        .start-menu-user img {
+            width: 48px;
+            height: 48px;
+            margin-right: 10px;
+        }
+
+        .start-menu-items {
+            padding: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .start-menu-item {
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .start-menu-item:hover {
+            background-color: #316AC5;
+            color: white;
+        }
+
+        .start-menu-item img {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .start-menu-footer {
+            background-color: #3C81F3;
+            border-top: 1px solid #1C64D9;
+            padding: 5px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .start-menu-footer button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 2px 2px #000000;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-5px, 5px);
+            }
+            40% {
+                transform: translate(-5px, -5px);
+            }
+            60% {
+                transform: translate(5px, 5px);
+            }
+            80% {
+                transform: translate(5px, -5px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        .glitch {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes rainbow {
+            0% { color: red; }
+            14% { color: orange; }
+            28% { color: yellow; }
+            42% { color: green; }
+            57% { color: blue; }
+            71% { color: indigo; }
+            85% { color: violet; }
+            100% { color: red; }
+        }
+
+        .rainbow-text {
+            animation: rainbow 5s infinite;
+        }
+
+        .combatant {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 0, 0, 0.5);
+            border: 2px solid #FF0000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px #000000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .hole {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #000;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px #fff;
+            overflow: hidden;
+        }
+
+        .hole::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 0%, #000 70%);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .mlg-pro {
+            animation: spin 2s linear infinite, rainbow 5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-audio" src="audio.mp3" loop></audio>
+    <div class="desktop">
+        <div class="icon" onclick="openMyComputer()">
+            <img src="https://icon-library.com/images/my-computer-icon-png/my-computer-icon-png-29.jpg" alt="MLG My Computer icon">
+            <div class="icon-label rainbow-text">My Computer</div>
+        </div>
+        <div class="icon" onclick="openInternetExplorer()">
+            <img src="expl.png" alt="MLG Internet Explorer icon">
+            <div class="icon-label rainbow-text">Internet Explorer</div>
+        </div>
+        <div class="icon" onclick="openRecycleBin()">
+            <img src="https://icons.iconarchive.com/icons/hydrattz/multipurpose-alphabet/256/Letter-R-blue-icon.png" alt="MLG Recycle Bin icon">
+            <div class="icon-label rainbow-text">Recycle Bin</div>
+        </div>
+        <div class="icon" onclick="openMinecraft()">
+            <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2d/Plains_Grass_Block.png" alt="MLG Minecraft icon">
+            <div class="icon-label rainbow-text">Minecraft</div>
+        </div>
+        <div class="icon" onclick="openUndertale666()">
+            <img src="under.png" alt="MLG Undertale (666 Edition) icon">
+            <div class="icon-label rainbow-text">Undertale (666 Edition)</div>
+        </div>
+        <div class="icon" onclick="openMountainDew()">
+            <img src="dew.png" alt="Mountain Dew icon">
+            <div class="icon-label rainbow-text">Mountain Dew</div>
+        </div>
+        <div class="icon" onclick="openDoritos()">
+            <img src="doritos.png" alt="Doritos icon">
+            <div class="icon-label rainbow-text">Doritos</div>
+        </div>
+        <div class="icon" onclick="openChatbot()">
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Chatbot icon">
+            <div class="icon-label rainbow-text">Chatbot</div>
+        </div>
+        <div class="icon" onclick="openMLGPro()">
+            <img src="mlg.png" alt="MLG Pro icon" class="mlg-pro">
+            <div class="icon-label rainbow-text">Tecnology Pro</div>
+        </div>
+        <div class="icon" onclick="openTherapy()">
+            <img src="https://cdn-icons-png.flaticon.com/512/3588/3588658.png" alt="Therapy icon">
+            <div class="icon-label rainbow-text">Therapy</div>
+        </div>
+        <div class="icon" onclick="openIncognito()">
+            <img src="https://cdn-icons-png.flaticon.com/512/2089/2089773.png" alt="Incognito icon">
+            <div class="icon-label rainbow-text">Incognito</div>
+        </div>
+        <div class="icon" onclick="openGoogleMLG()">
+            <img src="ggl.png" alt="Google MLG icon" class="mlg-pro">
+            <div class="icon-label rainbow-text">GOOGLE (TECH EDITION)</div>
+        </div>
+        <div class="icon" onclick="openWarThunder()">
+            <img src="war.png" alt="War Thunder icon">
+            <div class="icon-label rainbow-text">War Thunder</div>
+        </div>
+        <div class="icon" onclick="openWorldOfMLG()">
+            <img src="doge.png" alt="World of MLG icon">
+            <div class="icon-label rainbow-text">Tech World</div>
+        </div>
+        <div class="icon" onclick="openMewingApp()">
+            <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" alt="Mewing App icon">
+            <div class="icon-label rainbow-text">Mewing App</div>
+        </div>
+        <div class="icon" onclick="openSigmaToilet()">
+            <img src="sigma.png" alt="Sigma Toilet icon">
+            <div class="icon-label rainbow-text">Sigma Toilet</div>
+        </div>
+        <div class="icon" onclick="openClickerGame()">
+            <img src="https://cdn-icons-png.flaticon.com/512/2267/2267918.png" alt="Clicker The Game icon">
+            <div class="icon-label rainbow-text">Clicker The Game</div>
+        </div>
+        <div class="icon" onclick="openWarcraft3()">
+            <img src="warcraft.png" alt="Warcraft 3 icon">
+            <div class="icon-label rainbow-text">Warcraft 3</div>
+        </div>
+        <div class="icon" onclick="openSubscribeCookie()">
+            <img src="https://cdn-icons-png.flaticon.com/512/541/541732.png" alt="Subscribe for Cookie icon">
+            <div class="icon-label rainbow-text">Subscribe for Cookie!</div>
+        </div>
+        <div class="icon" onclick="open666Story()">
+            <img src="rememba.png" alt="666 the story icon">
+            <div class="icon-label rainbow-text">666 the story</div>
+        </div>
+        <div class="icon" onclick="openAchievements()">
+            <img src="trophy.png" alt="Achievements icon">
+            <div class="icon-label rainbow-text">Achievements</div>
+        </div>
+        <div class="taskbar">
+            <button class="start-button rainbow-text" onclick="toggleStartMenu()">Start</button>
+            <span class="rainbow-text" style="position: absolute; right: 10px; bottom: 5px;">CA: </span>
+        </div>
+        <div class="start-menu" id="startMenu">
+            <div class="start-menu-header">
+                <div class="start-menu-user">
+                    <img src="term.png" alt="MLG User icon">
+                    <span class="rainbow-text">Tech Terminal</span>
+                </div>
+            </div>
+            <div class="start-menu-items">
+                <div class="start-menu-item" onclick="openInternetExplorer()">
+                    <img src="expl.png" alt="MLG Internet Explorer icon">
+                    <span class="rainbow-text">Internet Explorer</span>
+                </div>
+                <div class="start-menu-item" onclick="openMinecraft()">
+                    <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2d/Plains_Grass_Block.png" alt="MLG Minecraft icon">
+                    <span class="rainbow-text">Minecraft</span>
+                </div>
+                <div class="start-menu-item" onclick="openUndertale666()">
+                    <img src="under.png" alt="MLGUndertale (666 Edition) icon">
+                    <span class="rainbow-text">Undertale (666 Edition)</span>
+                </div>
+                <div class="start-menu-item" onclick="openMyComputer()">
+                    <img src="https://icon-library.com/images/my-computer-icon-png/my-computer-icon-png-29.jpg" alt="MLG My Computer icon">
+                    <span class="rainbow-text">My Computer</span>
+                </div>
+                <div class="start-menu-item" onclick="openControlPanel()">
+                    <img src="https://icon-library.com/images/control-panel-icon-png/control-panel-icon-png-0.jpg" alt="MLG Control Panel icon">
+                    <span class="rainbow-text">Control Panel</span>
+                </div>
+                <div class="start-menu-item" onclick="openChatbot()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Chatbot icon">
+                    <span class="rainbow-text">Chatbot</span>
+                </div>
+                <div class="start-menu-item" onclick="openMLGPro()">
+                    <img src="mlg.png" alt="MLG Pro icon" class="mlg-pro">
+                    <span class="rainbow-text">Tech Pro</span>
+                </div>
+                <div class="start-menu-item" onclick="openTherapy()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3588/3588658.png" alt="Therapy icon">
+                    <span class="rainbow-text">Therapy</span>
+                </div>
+                <div class="start-menu-item" onclick="openIncognito()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2089/2089773.png" alt="Incognito icon">
+                    <span class="rainbow-text">Incognito</span>
+                </div>
+                <div class="start-menu-item" onclick="openGoogleMLG()">
+                    <img src="ggl.png" alt="Google MLG icon" class="mlg-pro">
+                    <span class="rainbow-text">GOOGLE (TECH EDITION)</span>
+                </div>
+                <div class="start-menu-item" onclick="openWarThunder()">
+                    <img src="war.png" alt="War Thunder icon">
+                    <span class="rainbow-text">War Thunder</span>
+                </div>
+                <div class="start-menu-item" onclick="openWorldOfMLG()">
+                    <img src="doge.png" alt="World of MLG icon">
+                    <span class="rainbow-text">Tech World</span>
+                </div>
+                <div class="start-menu-item" onclick="openMewingApp()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" alt="Mewing App icon">
+                    <span class="rainbow-text">Mewing App</span>
+                </div>
+                <div class="start-menu-item" onclick="openSigmaToilet()">
+                    <img src="sigma.png" alt="Sigma Toilet icon">
+                    <span class="rainbow-text">Sigma Toilet</span>
+                </div>
+                <div class="start-menu-item" onclick="openClickerGame()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2267/2267918.png" alt="Clicker The Game icon">
+                    <span class="rainbow-text">Clicker The Game</span>
+                </div>
+                <div class="start-menu-item" onclick="openWarcraft3()">
+                    <img src="warcraft.png" alt="Warcraft 3 icon">
+                    <span class="rainbow-text">Warcraft 3</span>
+                </div>
+                <div class="start-menu-item" onclick="openSubscribeCookie()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/541/541732.png" alt="Subscribe for Cookie icon">
+                    <span class="rainbow-text">Subscribe for Cookie!</span>
+                </div>
+                <div class="start-menu-item" onclick="open666Story()">
+                    <img src="rememba.png" alt="666 the story icon">
+                    <span class="rainbow-text">666 the story</span>
+                </div>
+                <div class="start-menu-item" onclick="openAchievements()">
+                    <img src="trophy.png" alt="Achievements icon">
+                    <span class="rainbow-text">Achievements</span>
+                </div>
+            </div>
+            <div class="start-menu-footer">
+                <button onclick="showShutdownOptions()" class="rainbow-text">Turn off computer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioPlayed = false; // Flag to check if audio has been played
+
+        document.addEventListener('click', function() {
+            if (!audioPlayed) {
+                const audio = document.getElementById('background-audio');
+                audio.play().catch(error => {
+                    console.error("Audio playback failed:", error);
+                });
+                audioPlayed = true; // Set the flag to true
+            }
+        });
+
+        function openMyComputer() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '50px';
+            window.style.top = '50px';
+            window.innerHTML = `
+                <div class="window-header">
+                    My Computer (Technological Edition)
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">Welcome to My Computer! It's time to get rekt!</p>
+                    <ul>
+                        <li class="rainbow-text">Local Disk (C:) - 420GB Free</li>
+                        <li class="rainbow-text">CD Drive (D:) - Insert Tech Mixtape</li>
+                        <li class="rainbow-text">Control Panel - Customize Your Swag</li>
+                    </ul>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openInternetExplorer() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '100px';
+            window.style.top = '100px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Internet Explorer (TECH Edition)
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">Welcome to Internet Explorer 6! Time to pwn some n00bs!</p>
+                    <p class="rainbow-text">Where do you want to go today?</p>
+                    <input type="text" placeholder="Enter a URL (360 no scope)" style="width: 80%;">
+                    <button class="rainbow-text">Go (Tech Style)</button>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openRecycleBin() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '150px';
+            window.style.top = '150px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Recycle Bin (TECH Edition)
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">The Recycle Bin is empty. Just like your skill level, n00b!</p>
+                    <button class="rainbow-text">Empty Recycle Bin (360 no scope)</button>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openMinecraft() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '200px';
+            window.style.top = '100px';
+            window.style.width = '500px';
+            window.style.height = '400px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Minecraft (TECH Edition)
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #404040; color: #FFFFFF;">
+                    <h2 style="text-align: center; font-family: 'Minecraft', sans-serif;" class="rainbow-text">Minecraft TECH Pro</h2>
+                    <div style="text-align: center;">
+                        <button style="background-color: #6b6b6b; color: #FFFFFF; border: 2px solid #424242; padding: 10px 20px; margin: 5px; cursor: pointer;" class="rainbow-text">Singleplayer (1v1 me)</button>
+                        <button style="background-color: #6b6b6b; color: #FFFFFF; border: 2px solid #424242; padding: 10px 20px; margin: 5px; cursor: pointer;" class="rainbow-text">Multiplayer (Get Rekt)</button>
+                        <button style="background-color: #6b6b6b; color: #FFFFFF; border: 2px solid #424242; padding: 10px 20px; margin: 5px; cursor: pointer;" class="rainbow-text">Options (Max Swag)</button>
+                        <button style="background-color: #6b6b6b; color: #FFFFFF; border: 2px solid #424242; padding: 10px 20px; margin: 5px; cursor: pointer;" class="rainbow-text">Quit Game (Ragequit)</button>
+                    </div>
+                    <p style="text-align: center; margin-top: 20px;" class="rainbow-text">Minecraft 1.2.5 (Windows XP TECH Edition)</p>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openUndertale666() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '300px';
+            window.style.top = '150px';
+            window.style.width = '500px';
+            window.style.height = '400px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Undertale (666 TECH Edition)
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #000000; color: #FF0000; font-family: 'Determination Mono', monospace; padding: 20px;">
+                    <h2 style="text-align: center; font-size: 24px;" class="glitch rainbow-text">UNDERTALE 666 TECH</h2>
+                    <p style="text-align: center; font-size: 16px;" class="rainbow-text">Warning: This is not the game you remember. Get ready to get rekt!</p>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button style="background-color: #FF0000; color: #000000; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; font-family: 'Determination Mono', monospace;" onclick="startUndertale666MLG()" class="rainbow-text">START GAME (360 NO SCOPE)</button>
+                        <button style="background-color: #FF0000; color: #000000; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; font-family: 'Determination Mono', monospace;" onclick="quitUndertale666MLG()" class="rainbow-text">QUIT (RAGEQUIT)</button>
+                    </div>
+                    <p style="text-align: center; margin-top: 20px; font-size: 12px;" class="rainbow-text">Version 6.6.6 TECH Pro</p>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openMountainDew() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '350px';
+            window.style.top = '200px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Mountain Dew Extreme
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">Time to fuel your TECH skills with some Mountain Dew!</p>
+                    <img src="dew.png" alt="Mountain Dew can" style="width: 100px; height: auto;">
+                    <button onclick="drinkMountainDew()" class="rainbow-text">Chug Mountain Dew</button>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openDoritos() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '400px';
+            window.style.top = '250px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Doritos TECH Fuel
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">Crunch on some Doritos to boost your gaming skills!</p>
+                    <img src="doritos.png" alt="Doritos bag" style="width: 100px; height: auto;">
+                    <button onclick="eatDoritos()" class="rainbow-text">Munch Doritos</button>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openChatbot() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '450px';
+            window.style.top = '300px';
+            window.style.width = '500px';
+            window.style.height = '400px';
+            window.innerHTML = `
+                <div class="window-header">
+                    TECH Hax0r Terminal
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #000; color: #0F0; font-family: 'Courier New', monospace; padding: 10px; overflow-y: scroll; height: 320px;">
+                    <p>Welcome to the TECH Hax0r Terminal, n00b!</p>
+                    <p>Prepare to get rekt as you try to crack the system!</p>
+                    <div id="chatbot-output"></div>
+                    <input type="text" id="chatbot-input" placeholder="Enter your l33t command" style="width: 100%; background-color: #000; color: #0F0; border: 1px solid #0F0;">
+                    <button onclick="sendChatbotCommand()" class="rainbow-text">Execute</button>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openMLGPro() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '500px';
+            window.style.top = '350px';
+            window.style.width = '600px';
+            window.style.height = '500px';
+            window.innerHTML = `
+                <div class="window-header">
+                    TECH Pro Training
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="padding: 20px;">
+                    <h2 class="rainbow-text" style="margin-bottom: 20px;">Welcome to TECH Pro Training</h2>
+                    <p class="rainbow-text" style="margin-bottom: 30px;">Level up your skills and become the ultimate gamer!</p>
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">Quickscope Skill: <span id="quickscope-skill">0</span></p>
+                        <button onclick="trainQuickscope()" class="rainbow-text" style="padding: 10px 20px;">Train Quickscope</button>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">Trash Talk Skill: <span id="trashtalk-skill">0</span></p>
+                        <button onclick="trainTrashTalk()" class="rainbow-text" style="padding: 10px 20px;">Train Trash Talk</button>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">Montage Editing Skill: <span id="montage-skill">0</span></p>
+                        <button onclick="trainMontageEditing()" class="rainbow-text" style="padding: 10px 20px;">Train Montage Editing</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openTherapy() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '150px';
+            window.style.top = '100px';
+            window.innerHTML = `
+                <div class="window-header">
+                    TECH Therapy Session
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <h2 class="rainbow-text">Welcome to TECH Therapy</h2>
+                    <p class="rainbow-text">Sometimes even the best gamers need to talk it out.</p>
+                    <textarea placeholder="Tell Dr. NoScope about your problems..." rows="4" cols="50"></textarea>
+                    <button onclick="getTherapyResponse()" class="rainbow-text">Get Advice</button>
+                    <div id="therapy-response"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openIncognito() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '200px';
+            window.style.top = '150px';
+            window.innerHTML = `
+                <div class="window-header">
+                    TECH Incognito Mode
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #333; color: #fff;">
+                    <h2 class="rainbow-text">Welcome to TECH Incognito Mode</h2>
+                    <p class="rainbow-text">What happens in TECH Incognito, stays in TECH Incognito...</p>
+                    <input type="text" placeholder="Search for top secret TECH strats" style="width: 80%;">
+                    <button onclick="searchIncognito()" class="rainbow-text">Search</button>
+                    <div id="incognito-results"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openGoogleMLG() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '250px';
+            window.style.top = '200px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Google TECH Edition
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <h1 class="rainbow-text" style="font-size: 72px; text-align: center;">Google TECH</h1>
+                    <input type="text" placeholder="Search for dank memes and epic gamer moments" style="width: 80%; padding: 10px; font-size: 16px;">
+                    <button onclick="searchGoogleMLG()" class="rainbow-text" style="padding: 10px; font-size: 16px;">I'm Feeling Lucky (360 No Scope)</button>
+                    <div id="google-mlg-results"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openWarThunder() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '300px';
+            window.style.top = '250px';
+            window.innerHTML = `
+                <div class="window-header">
+                    War Thunder TECH Edition
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #2a2a2a; color: #fff;">
+                    <h2 class="rainbow-text">Welcome to War Thunder TECH Edition</h2>
+                    <p class="rainbow-text">Prepare for intense air and ground combat with a twist of TECH madness!</p>
+                    <button onclick="startWarThunder()" class="rainbow-text">Start Battle (360 No Scope Edition)</button>
+                    <button onclick="customizeVehicle()" class="rainbow-text">Customize Vehicle (Pimp My Ride)</button>
+                    <div id="war-thunder-gameplay"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openWorldOfMLG() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '350px';
+            window.style.top = '300px';
+            window.innerHTML = `
+                <div class="window-header">
+                    World of MLG
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #1a1a1a; color: #fff;">
+                    <h2 class="rainbow-text">Welcome to TECH World</h2>
+                    <p class="rainbow-text">Experience the ultimate MMORPG with TECH elements!</p>
+                    <button onclick="createMLGCharacter()" class="rainbow-text">Create TECH Character</button>
+                    <button onclick="startMLGQuest()" class="rainbow-text">Start Epic Quest</button>
+                    <button onclick="joinMLGRaid()" class="rainbow-text">Join TECH Raid</button>
+                    <div id="world-of-mlg-status"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openMewingApp() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '400px';
+            window.style.top = '350px';
+            window.innerHTML = `
+                <div class="window-header">
+                    TECH Mewing Trainer
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <h2 class="rainbow-text">Welcome to TECH Mewing Trainer</h2>
+                    <p class="rainbow-text">Transform your jawline and become a true Chad gamer!</p>
+                    <button onclick="startMewingSession()" class="rainbow-text">Start Mewing Session</button>
+                    <button onclick="checkMewingProgress()" class="rainbow-text">Check Mewing Progress</button>
+                    <div id="mewing-status"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openSigmaToilet() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '450px';
+            window.style.top = '400px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Sigma Toilet
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #343434; color: #fff;">
+                    <h2 class="rainbow-text">Welcome to the Sigma Toilet</h2>
+                    <p class="rainbow-text">Optimize your gaming performance with the ultimate gaming throne!</p>
+                    <button onclick="useSigmaToilet()" class="rainbow-text">Use Sigma Toilet</button>
+                    <button onclick="upgradeSigmaToilet()" class="rainbow-text">Upgrade Sigma Toilet</button>
+                    <div id="sigma-toilet-status"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openClickerGame() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '500px';
+            window.style.top = '450px';
+            window.innerHTML = `
+                <div class="window-header">
+                    TECH Clicker Game
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <h2 class="rainbow-text">TECH Clicker: The Game</h2>
+                    <p class="rainbow-text">Click your way to TECH glory!</p>
+                    <p>TECH Points: <span id="mlg-points">0</span></p>
+                    <button onclick="clickMLG()" class="rainbow-text">Click for TECH</button>
+                    <button onclick="buyUpgrade()" class="rainbow-text">Buy Upgrade</button>
+                    <div id="clicker-game-status"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openWarcraft3() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '550px';
+            window.style.top = '500px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Warcraft III: TECH Edition
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #000; color: #FFD700;">
+                    <h2 class="rainbow-text">Welcome to Warcraft III: TECH Edition</h2>
+                    <p class="rainbow-text">Experience the classic RTS with an TECH twist!</p>
+                    <button onclick="startWarcraft3Campaign()" class="rainbow-text">Start TECH Campaign</button>
+                    <button onclick="joinWarcraft3Multiplayer()" class="rainbow-text">Join TECH Multiplayer</button>
+                    <button onclick="customWarcraft3Map()" class="rainbow-text">Create Custom TECH Map</button>
+                    <div id="warcraft3-status"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function openSubscribeCookie() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '600px';
+            window.style.top = '550px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Subscribe for Cookie
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <h2 class="rainbow-text">Get Your TECH Cookie!</h2>
+                    <p class="rainbow-text">Subscribe to unlock the ultimate gamer treat!</p>
+                    <input type="email" placeholder="Enter your email" style="width: 80%;">
+                    <button onclick="subscribeCookie()" class="rainbow-text">Subscribe & Get Cookie</button>
+                    <div id="subscribe-cookie-status"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function open666Story() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '650px';
+            window.style.top = '600px';
+            window.innerHTML = `
+                <div class="window-header">
+                    666: The TECH Story
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content" style="background-color: #1a0000; color: #ff0000;">
+                    <h2 class="rainbow-text">666: The TECH Story</h2>
+                    <p class="rainbow-text">Uncover the dark secrets of the TECH world...</p>
+                    <button onclick="start666Story()" class="rainbow-text">Begin the Tale</button>
+                    <button onclick="make666Choice()" class="rainbow-text">Make a Choice</button>
+                    <div id="story-666-content"></div>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function toggleStartMenu() {
+            const startMenu = document.getElementById('startMenu');
+            if (startMenu.style.display === 'none' || startMenu.style.display === '') {
+                startMenu.style.display = 'block';
+            } else {
+                startMenu.style.display = 'none';
+            }
+        }
+
+        function showShutdownOptions() {
+            const shutdownWindow = document.createElement('div');
+            shutdownWindow.className = 'window';
+            shutdownWindow.style.left = '50%';
+            shutdownWindow.style.top = '50%';
+            shutdownWindow.style.transform = 'translate(-50%, -50%)';
+            shutdownWindow.innerHTML = `
+                <div class="window-header">
+                    Shut Down Windows XP (TECH Edition)
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">Are you sure you want to shut down? Your TECH progress will be saved.</p>
+                    <button onclick="shutdownMLG()" class="rainbow-text">Shut Down</button>
+                    <button onclick="restartMLG()" class="rainbow-text">Restart</button>
+                    <button onclick="this.parentElement.parentElement.remove()" class="rainbow-text">Cancel</button>
+                </div>
+            `;
+            document.body.appendChild(shutdownWindow);
+        }
+
+        // Window dragging functionality
+        document.addEventListener('mousedown', function(e) {
+            let target = e.target;
+
+            // Check if we clicked on a window header
+            if (target.className === 'window-header') {
+                let window = target.parentElement;
+                let isDragging = true;
+
+                // Calculate offset from mouse to window corner
+                let offsetX = e.clientX - window.offsetLeft;
+                let offsetY = e.clientY - window.offsetTop;
+
+                // Setup move handler
+                function moveWindow(e) {
+                    if (isDragging) {
+                        window.style.left = (e.clientX - offsetX) + 'px';
+                        window.style.top = (e.clientY - offsetY) + 'px';
+                    }
+                }
+
+                // Setup mouseup handler
+                function stopDragging() {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', moveWindow);
+                    document.removeEventListener('mouseup', stopDragging);
+                }
+
+                // Add event listeners
+                document.addEventListener('mousemove', moveWindow);
+                document.addEventListener('mouseup', stopDragging);
+            }
+        });
+
+        // Ensure windows appear on top when clicked
+        document.addEventListener('mousedown', function(e) {
+            let window = e.target.closest('.window');
+            if (window) {
+                // Get all windows
+                let windows = document.querySelectorAll('.window');
+                let maxZ = Math.max(...Array.from(windows).map(w => parseInt(w.style.zIndex || 0)));
+                // Set this window's z-index to highest + 1
+                window.style.zIndex = maxZ + 1;
+            }
+        });
+
+        function drinkMountainDew() {
+            alert("You've been energized with TECH power!");
+            unlockAchievement('Mountain Dew Chugging Champion');
+        }
+
+        function eatDoritos() {
+            alert("Your fingers are now coated with the dust of champions!");
+            unlockAchievement('Dorito Dust Fingertips');
+        }
+
+        function sendChatbotCommand() {
+            const input = document.getElementById('chatbot-input');
+            const output = document.getElementById('chatbot-output');
+            output.innerHTML += `<p>> ${input.value}</p>`;
+            output.innerHTML += `<p>TECH Hax0r: Get rekt, n00b! Your l33t skills are no match for my firewall of swag!</p>`;
+            input.value = '';
+        }
+
+        let quickscopeSkill = 0;
+        let trashtalkSkill = 0;
+        let montageSkill = 0;
+
+        function trainQuickscope() {
+            quickscopeSkill += 1;
+            document.getElementById('quickscope-skill').textContent = quickscopeSkill;
+            if (quickscopeSkill >= 50) {
+                unlockAchievement('360 No Scope Master');
+            }
+        }
+
+        function trainTrashTalk() {
+            trashtalkSkill += 1;
+            document.getElementById('trashtalk-skill').textContent = trashtalkSkill;
+        }
+
+        function trainMontageEditing() {
+            montageSkill += 1;
+            document.getElementById('montage-skill').textContent = montageSkill;
+        }
+
+        function getTherapyResponse() {
+            const responses = [
+                "Have you tried turning your life off and on again?",
+                "Remember, it's not about winning, it's about making others lose.",
+                "Your K/D ratio in life is still 1.0, keep it up!",
+                "Have you considered 360 no-scoping your problems?",
+                "Sometimes, the best strategy is to camp it out."
+            ];
+            document.getElementById('therapy-response').innerHTML = `<p class="rainbow-text">Dr. NoScope says: ${responses[Math.floor(Math.random() * responses.length)]}</p>`;
+        }
+
+        function openAchievements() {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.style.left = '400px';
+            window.style.top = '300px';
+            window.innerHTML = `
+                <div class="window-header">
+                    Achievements
+                    <button class="close-button" onclick="this.parentElement.parentElement.remove()">X</button>
+                </div>
+                <div class="window-content">
+                    <p class="rainbow-text">you got none you fucker</p>
+                </div>
+            `;
+            document.body.appendChild(window);
+        }
+
+        function searchIncognito() {
+            const results = [
+                "Top 10 secret Doritos flavors",
+                "How to increase Mountain Dew intake without kidney failure",
+                "Ultimate guide to trash talking your grandma in COD",
+                "Secret Xbox Live gold membership rituals",
+                "How to convince your mom that 4AM is a reasonable bedtime"
+            ];
+            document.getElementById('incognito-results').innerHTML = results.map(result => `<p class="rainbow-text">${result}</p>`).join('');
+        }
+
+        function searchGoogleMLG() {
+            const results = [
+                "TECH Teletubbies: The Ultimate Crossover",
+                "How to turn your gaming chair into a throne of memes",
+                "Top 10 anime betrayals in competitive Minesweeper",
+                "Breaking: Scientists confirm Mountain Dew is a performance-enhancing drug",
+                "New study shows correlation between Dorito consumption and 360 no-scope accuracy"
+            ];
+            document.getElementById('google-mlg-results').innerHTML = results.map(result => `<p class="rainbow-text">${result}</p>`).join('');
+        }
+
+        function startWarThunder() {
+            document.getElementById('war-thunder-gameplay').innerHTML = `<p class="rainbow-text">You've entered a battle! Your Dorito-shaped fighter jet is ready for takeoff. Enemy Mountain Dew bombers incoming!</p>`;
+        }
+
+        function customizeVehicle() {
+            document.getElementById('war-thunder-gameplay').innerHTML = `<p class="rainbow-text">Vehicle pimped out! Your tank now shoots Doritos and leaves a trail of Mountain Dew.</p>`;
+        }
+
+        function createMLGCharacter() {
+            const classes = ["360 No-Scoper", "Meme Mage", "Dorito Paladin", "Mountain Dew Berserker", "Trash Talk Bard"];
+            const randomClass = classes[Math.floor(Math.random() * classes.length)];
+            document.getElementById('world-of-mlg-status').innerHTML = `<p class="rainbow-text">Character created! You are now a level 1 ${randomClass}. May your journey be dank and your loot be epic.</p>`;
+        }
+
+        function startMLGQuest() {
+            document.getElementById('world-of-mlg-status').innerHTML += `<p class="rainbow-text">New quest: "The Search for the Holy Mountain Dew". Traverse the treacherous lands of Xbox Live and recover the sacred beverage!</p>`;
+        }
+
+        function joinMLGRaid() {
+            document.getElementById('world-of-mlg-status').innerHTML += `<p class="rainbow-text">Joining raid: "The Dorito Dungeon". Prepare your most powerful memes and get ready to face the final boss: King Swag!</p>`;
+        }
+
+        function startMewingSession() {
+            document.getElementById('mewing-status').innerHTML = `<p class="rainbow-text">Mewing session started! Keep your tongue on the roof of your mouth and maintain proper posture. Your jaw gains +1 Chadness every minute.</p>`;
+        }
+
+        function checkMewingProgress() {
+            const progress = Math.floor(Math.random() * 100);
+            document.getElementById('mewing-status').innerHTML += `<p class="rainbow-text">Mewing Progress: ${progress}% Chad. Keep it up, and soon you'll be able to crush Mountain Dew cans with your jaw!</p>`;
+        }
+
+        function useSigmaToilet() {
+            document.getElementById('sigma-toilet-status').innerHTML = `<p class="rainbow-text">Using Sigma Toilet... Gaming performance increased by 200%! You're literally on the throne of champions.</p>`;
+            const usageCount = localStorage.getItem('sigmaToiletUsage') || 0;
+            localStorage.setItem('sigmaToiletUsage', parseInt(usageCount) + 1);
+            if (parseInt(usageCount) + 1 >= 100) {
+                unlockAchievement('Sigma Grindset');
+            }
+        }
+
+        function upgradeSigmaToilet() {
+            document.getElementById('sigma-toilet-status').innerHTML += `<p class="rainbow-text">Sigma Toilet upgraded! It now automatically adjusts to your optimal gaming position and dispenses Mountain Dew.</p>`;
+        }
+
+        let mlgPoints = 0;
+
+        function clickMLG() {
+            mlgPoints += 1;
+            document.getElementById('mlg-points').textContent = mlgPoints;
+            document.getElementById('clicker-game-status').innerHTML = `<p class="rainbow-text">You gained 1 TECH point! Keep clicking to become the ultimate TECH master!</p>`;
+        }
+
+        function buyUpgrade() {
+            if (mlgPoints >= 10) {
+                mlgPoints -= 10;
+                document.getElementById('mlg-points').textContent = mlgPoints;
+                document.getElementById('clicker-game-status').innerHTML += `<p class="rainbow-text">Upgrade purchased! Your clicks are now 2x more MLG!</p>`;
+            } else {
+                document.getElementById('clicker-game-status').innerHTML += `<p class="rainbow-text">Not enough TECH points! Git gud and keep clicking!</p>`;
+            }
+        }
+
+        function startWarcraft3Campaign() {
+            document.getElementById('warcraft3-status').innerHTML = `<p class="rainbow-text">Starting TECH Campaign: "The Frozen Dew Throne". Prepare to face the Dorito King and his army of toxic players!</p>`;
+        }
+
+        function joinWarcraft3Multiplayer() {
+            document.getElementById('warcraft3-status').innerHTML += `<p class="rainbow-text">Joining TECH Multiplayer lobby. Game mode: Extreme 360 No-Scope Tower Defense. May the dankest player win!</p>`;
+        }
+
+        function customWarcraft3Map() {
+            document.getElementById('warcraft3-status').innerHTML += `<p class="rainbow-text">Creating custom TECH map: "Battle for Gamer Fuel". Featuring Doritos golems and Mountain Dew fountains!</p>`;
+        }
+
+        function subscribeCookie() {
+            document.getElementById('subscribe-cookie-status').innerHTML = `<p class="rainbow-text">Congratulations! You've subscribed and unlocked the legendary TECH Cookie! It grants you the power of infinite gamer fuel and unmatched swag!</p>`;
+        }
+
+        function start666Story() {
+            document.getElementById('story-666-content').innerHTML = `<p class="rainbow-text">In the year 20XX, the world of TECH gaming has been consumed by a dark force known as the "666 No-Scope Demon". You are the chosen one, destined to defeat this evil and restore balance to the gaming world.</p>`;
+        }
+
+        function make666Choice() {
+            const choices = [
+                "Confront the 666 No-Scope Demon head-on",
+                "Seek the legendary Mountain Dew of Power",
+                "Train with the ancient order of TECH monks",
+                "Forge an alliance with the Dorito Illuminati"
+            ];
+            const randomChoice = choices[Math.floor(Math.random() * choices.length)];
+            document.getElementById('story-666-content').innerHTML += `<p class="rainbow-text">You decide to ${randomChoice}. The fate of the TECH world hangs in the balance!</p>`;
+        }
+
+        function shutdownMLG() {
+            document.body.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #000;">
+                <h1 class="rainbow-text" style="font-size: 48px;">Windows XP TECH Edition is shutting down... Stay MLG, gamer!</h1>
+            </div>`;
+        }
+
+        function restartMLG() {
+            location.reload();
+        }
+
+        // Achievement system
+        function unlockAchievement(achievementName) {
+            const achievementList = document.getElementById('achievement-list');
+            if (achievementList) {
+                const achievements = achievementList.getElementsByTagName('li');
+                for (let achievement of achievements) {
+                    if (achievement.textContent.includes(achievementName)) {
+                        achievement.innerHTML = achievement.innerHTML.replace('🔒', '🏆');
+                        showAchievementNotification(achievementName);
+                        break;
+                    }
+                }
+            }
+        }
+
+        function showAchievementNotification(achievementName) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            notification.style.color = '#fff';
+            notification.style.padding = '10px';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '9999';
+            notification.innerHTML = `<span class="rainbow-text">Achievement Unlocked: ${achievementName}</span>`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
